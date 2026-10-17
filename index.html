@@ -1,0 +1,583 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Sorry, Mummy 💗</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    color: #54264d;
+    background: linear-gradient(135deg, #fff5f8, #ffe1ec, #f8e9ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px 14px;
+    overflow-x: hidden;
+}
+
+.glow {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+    pointer-events: none;
+    animation: drift 8s infinite alternate;
+}
+
+.glow.one {
+    background: #ff8cb5;
+    top: -80px;
+    left: -80px;
+}
+
+.glow.two {
+    background: #c9a0ff;
+    bottom: -80px;
+    right: -80px;
+}
+
+.hearts {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.heart {
+    position: absolute;
+    bottom: -50px;
+    color: #ff6d9e;
+    opacity: 0;
+    animation: floatUp 12s linear infinite;
+}
+
+.heart:nth-child(1) { left: 8%; font-size: 25px; }
+.heart:nth-child(2) { left: 25%; font-size: 18px; animation-delay: 2s; }
+.heart:nth-child(3) { left: 45%; font-size: 30px; animation-delay: 4s; }
+.heart:nth-child(4) { left: 65%; font-size: 22px; animation-delay: 1s; }
+.heart:nth-child(5) { left: 80%; font-size: 28px; animation-delay: 3s; }
+.heart:nth-child(6) { left: 92%; font-size: 18px; animation-delay: 5s; }
+
+.container {
+    position: relative;
+    width: min(760px, 100%);
+    z-index: 1;
+}
+
+.topline {
+    text-align: center;
+    color: #b45c83;
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid white;
+    border-radius: 28px;
+    padding: clamp(24px, 5vw, 48px);
+    box-shadow: 0 25px 80px #a34d7420;
+    backdrop-filter: blur(15px);
+    animation: appear 1s ease both;
+    position: relative;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px dashed #f2b7cc;
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+.badge {
+    display: table;
+    margin: 0 auto 18px;
+    padding: 10px 16px;
+    background: #fff0f5;
+    border-radius: 30px;
+    color: #c44d7c;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.big-heart {
+    display: block;
+    text-align: center;
+    font-size: 55px;
+    animation: heartbeat 1.5s infinite;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 7vw, 65px);
+    text-align: center;
+    color: #9d315f;
+    margin: 15px 0;
+    line-height: 1.1;
+}
+
+h1 span {
+    color: #fa6595;
+}
+
+.subtitle {
+    text-align: center;
+    color: #8a5571;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.nicknames {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px;
+    margin: 25px 0;
+}
+
+.nickname {
+    background: white;
+    border: 1px solid #ffd1e0;
+    color: #b44272;
+    padding: 10px 14px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: bold;
+    animation: pop 0.7s ease both;
+}
+
+.letter {
+    background: linear-gradient(135deg, #fffafd, #fff0f5);
+    border: 1px solid #ffe0eb;
+    border-radius: 18px;
+    padding: clamp(18px, 4vw, 28px);
+    color: #6f3c5c;
+    line-height: 1.9;
+}
+
+.letter p {
+    margin-bottom: 15px;
+}
+
+.letter p:last-child {
+    margin-bottom: 0;
+}
+
+.salute {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    color: #b43d70;
+    font-weight: bold;
+}
+
+.signature {
+    text-align: right;
+    margin-top: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    color: #b43d70;
+}
+
+.promise {
+    margin-top: 20px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #f9d4e2;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 1.7;
+    color: #a44670;
+    font-weight: 600;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+button {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-4px) scale(1.02);
+}
+
+.yes {
+    color: white;
+    background: linear-gradient(135deg, #ff6b9d, #f34580);
+    box-shadow: 0 12px 25px #f65b9144;
+}
+
+.hug {
+    color: #a44470;
+    background: white;
+    border: 1px solid #f6bfd3;
+}
+
+.response {
+    display: none;
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fff0f6, white);
+    border: 1px solid #ffd4e3;
+    text-align: center;
+    animation: appear 0.5s ease;
+}
+
+.response.show {
+    display: block;
+}
+
+.response h2 {
+    font-family: 'Playfair Display', serif;
+    color: #a53367;
+    margin-bottom: 10px;
+}
+
+.response p {
+    line-height: 1.8;
+    color: #824767;
+}
+
+.small-note {
+    text-align: center;
+    color: #ae7892;
+    font-size: 12px;
+    margin-top: 18px;
+}
+
+.footer {
+    text-align: center;
+    color: #b27a96;
+    font-size: 12px;
+    margin-top: 18px;
+}
+
+.confetti {
+    position: fixed;
+    top: -30px;
+    pointer-events: none;
+    z-index: 10;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    100% {
+        transform: translateY(-110vh) rotate(35deg);
+        opacity: 0;
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes drift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(40px, 30px); }
+}
+
+@keyframes pop {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 25px 20px;
+    }
+
+    .buttons button {
+        width: 100%;
+    }
+
+    .letter {
+        font-size: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<div class="hearts">
+    <span class="heart">♥</span>
+    <span class="heart">♡</span>
+    <span class="heart">♥</span>
+    <span class="heart">♡</span>
+    <span class="heart">♥</span>
+    <span class="heart">♡</span>
+</div>
+
+<div class="container">
+
+    <div class="topline">
+        A LITTLE MESSAGE FROM YOUR BAVA 💌
+    </div>
+
+    <div class="card">
+        <div class="content">
+
+            <div class="badge">
+                FOR MY FAVOURITE PERSON 🧸
+            </div>
+
+            <span class="big-heart">💗</span>
+
+            <h1>
+                I'm Sorry,<br>
+                <span>Mummy</span> 🥺
+            </h1>
+
+            <p class="subtitle">
+                To my favourite human, my comfort, my smile,
+                and the one I never want to make feel forgotten. 💞
+            </p>
+
+            <div class="nicknames">
+                <span class="nickname">Mummy 🥹</span>
+                <span class="nickname">Mumma 💕</span>
+                <span class="nickname">Wiffeyyyy 💍</span>
+                <span class="nickname">Bangaraaaaaaa ✨</span>
+            </div>
+
+            <div class="letter">
+
+                <p class="salute">
+                    My sweetest Mummy, Mumma, my Wiffeyyyy… 💗
+                </p>
+
+                <p>
+                    Bangaraaaaaaa 🥺❤️, I'm really sorry that I
+                    didn't call you. I know even a small thing like
+                    this can make you feel sad, ignored, or like you
+                    weren't on my mind. I'm sorry for making you
+                    feel that way, kanna.
+                </p>
+
+                <p>
+                    You are so special to me, and you deserve my time,
+                    care, and attention — not just my words. I should
+                    have called you instead of leaving you waiting.
+                    I can't change what happened, but I can be more
+                    thoughtful about what I do next. 🫶
+                </p>
+
+                <p>
+                    Mummy, please don't think that you're any less
+                    important to me. Even when I mess up, my love
+                    and care for you are real. I miss talking to you,
+                    hearing your voice, listening to your little
+                    stories, and being your Bava. 🧸💋
+                </p>
+
+                <p>
+                    I'm not asking you to forget how you felt.
+                    I'm asking for a chance to make it right.
+                    I'll try my best not to repeat this, and if I'm
+                    ever busy or unable to call, I'll tell you
+                    instead of keeping you waiting. You deserve
+                    that much from me. ❤️‍🩹
+                </p>
+
+                <p>
+                    So, my Mumma… can you please forgive your silly
+                    Bava? 🥺👉👈 I want to make you smile again,
+                    give you the biggest virtual hug, and remind
+                    you how precious you are to me. No excuses,
+                    just a real sorry from my heart. 💐
+                </p>
+
+                <p>
+                    <strong>
+                        I love you, my Mummy, my Mumma, my Wiffeyyyy,
+                        my Bangaraaaaaaa. ❤️♾️
+                    </strong>
+                </p>
+
+                <div class="signature">
+                    Forever your Bava 😚💗
+                </div>
+
+            </div>
+
+            <div class="promise">
+                🤞 My little promise: I'll communicate better,
+                respect your feelings, and make more effort —
+                not just say sorry.
+            </div>
+
+            <div class="buttons">
+                <button class="yes" id="forgiveBtn">
+                    Okay, Bava ❤️ 🥹
+                </button>
+
+                <button class="hug" id="hugBtn">
+                    I need a hug first 🫂
+                </button>
+            </div>
+
+            <div class="response" id="response" aria-live="polite"></div>
+
+            <p class="small-note">
+                No pressure, my love. Your feelings matter. 💗
+            </p>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        Made with a little regret, lots of love & one very sorry Bava ♡
+    </div>
+
+</div>
+
+<script>
+const response = document.getElementById("response");
+const forgiveBtn = document.getElementById("forgiveBtn");
+const hugBtn = document.getElementById("hugBtn");
+
+function showMessage(title, message) {
+    response.innerHTML = `
+        <h2>${title}</h2>
+        <p>${message}</p>
+    `;
+
+    response.classList.add("show");
+
+    response.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+}
+
+function celebrate() {
+    const symbols = [
+        "💗", "💖", "💕", "✨", "🌸", "💞", "❤️"
+    ];
+
+    for (let i = 0; i < 35; i++) {
+        const item = document.createElement("span");
+
+        item.className = "confetti";
+        item.textContent =
+            symbols[Math.floor(Math.random() * symbols.length)];
+
+        item.style.left = Math.random() * 100 + "vw";
+        item.style.fontSize =
+            (16 + Math.random() * 20) + "px";
+
+        item.style.animationDelay =
+            Math.random() * 0.8 + "s";
+
+        document.body.appendChild(item);
+
+        setTimeout(() => {
+            item.remove();
+        }, 4200);
+    }
+}
+
+forgiveBtn.addEventListener("click", function () {
+    showMessage(
+        "Awww, thank you, my love! 🥹💗",
+        "Virtual hugs and a million kisses for my Mummy! 🫂💋 " +
+        "I'll keep showing you through my actions that you matter " +
+        "to me. Now come here, Bangaraaaaaaa… ❤️"
+    );
+
+    celebrate();
+
+    forgiveBtn.textContent = "Big hug for my Bava 🫂";
+});
+
+hugBtn.addEventListener("click", function () {
+    showMessage(
+        "Come here, my Bangaraaaaaaa 🫂💞",
+        "Sending you the warmest hug ever. You don't have to be " +
+        "okay immediately — I want to listen, understand, and make " +
+        "things right. Whenever you're ready, your Bava is here. ❤️"
+    );
+
+    celebrate();
+});
+</script>
+
+</body>
+</html>
